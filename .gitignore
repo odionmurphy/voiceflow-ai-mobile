@@ -31,6 +31,7 @@ yarn-error.*
 *.pem
 
 # local env files
+.env
 .env*.local
 
 # typescript
@@ -39,3 +40,9 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Stray files unrelated to the app - an accidental ImageMagick PostScript export that
+# happened to get named "axios" (24MB, unrelated to the npm package), and an old backup
+# draft of src/api/axios.ts with a stale local IP.
+/axios
+src/api/.client.ts.awd
