@@ -2,7 +2,7 @@ import axios from "axios";
 import { getToken } from "../utils/storage";
 
 export const api = axios.create({
-  baseURL: "http://192.168.178.31:4000/api",
+  baseURL: "https://voiceflow-ai-backend-6drh.onrender.com/api",
   timeout: 10000,
 });
 
