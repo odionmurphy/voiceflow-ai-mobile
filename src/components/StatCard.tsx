@@ -86,11 +86,11 @@ export default function StatCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.panel,
     borderRadius: 14,
     marginRight: 10,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: "#ECECE8",
     overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -123,14 +123,14 @@ const styles = StyleSheet.create({
   },
   iconText: { fontSize: 16 },
   chevron: { fontSize: 18, color: "#C1C6D0", fontWeight: "600" },
-  value: { fontSize: 28, fontWeight: "800", color: "#111827", letterSpacing: -0.5 },
+  value: { fontSize: 28, fontWeight: "800", color: COLORS.ink, letterSpacing: -0.5 },
   label: {
     fontSize: 11,
     fontWeight: "700",
-    color: "#8A8F99",
+    color: COLORS.inkSoft,
     marginTop: 4,
     textTransform: "uppercase",
     letterSpacing: 0.4,
   },
-  note: { fontSize: 10, color: "#999", marginTop: 4 },
+  note: { fontSize: 10, color: COLORS.inkSoft, marginTop: 4 },
 });

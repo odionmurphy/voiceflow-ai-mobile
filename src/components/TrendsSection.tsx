@@ -31,7 +31,7 @@ export default function TrendsSection({ businessId }: { businessId: string }) {
   return (
     <View style={{ marginTop: 24 }}>
       <View style={styles.headerRow}>
-        <Text style={styles.sectionTitle}>Trends</Text>
+        <Text style={styles.sectionLabel}>Trends</Text>
         <View style={styles.rangeSwitcher}>
           {RANGE_OPTIONS.map((opt) => (
             <Pressable
@@ -82,6 +82,15 @@ export default function TrendsSection({ businessId }: { businessId: string }) {
               tone={data.totals.noShowRate && data.totals.noShowRate > 0.1 ? "red" : "navy"}
             />
           </View>
+          <View style={styles.statsRow}>
+            <StatCard
+              label="Revenue"
+              value={`$${Number(data.totals.revenue ?? 0).toFixed(2)}`}
+              note="Confirmed + completed"
+              icon="💰"
+              tone="amber"
+            />
+          </View>
 
           <View style={styles.chartCard}>
             <CallsTrendChart daily={data.daily} />
@@ -94,26 +103,32 @@ export default function TrendsSection({ businessId }: { businessId: string }) {
 
 const styles = StyleSheet.create({
   headerRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  sectionTitle: { fontSize: 16, fontWeight: "700", color: "#111827" },
+  sectionLabel: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: COLORS.inkSoft,
+    textTransform: "uppercase",
+    letterSpacing: 0.6,
+  },
   rangeSwitcher: {
     flexDirection: "row",
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.panel,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: "#ECECE8",
     padding: 2,
   },
   rangeBtn: { paddingVertical: 5, paddingHorizontal: 9, borderRadius: 6 },
   rangeBtnActive: { backgroundColor: COLORS.navy },
-  rangeBtnText: { fontSize: 11, fontWeight: "600", color: "#6B7280" },
+  rangeBtnText: { fontSize: 11, fontWeight: "600", color: COLORS.inkSoft },
   rangeBtnTextActive: { color: "#fff" },
   statsRow: { flexDirection: "row", marginTop: 12 },
   chartCard: {
     marginTop: 4,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.panel,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: "#ECECE8",
     padding: 14,
   },
 });

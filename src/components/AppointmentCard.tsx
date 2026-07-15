@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Pressable, Animated } from "react-native";
 import { Appointment } from "../api/appointments";
+import { COLORS } from "../theme";
 
 const STATUS_COLORS: Record<string, { bg: string; fg: string }> = {
   confirmed: { bg: "#D1FAE5", fg: "#047857" },
@@ -104,12 +105,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.panel,
     borderRadius: 12,
     padding: 14,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: "#ECECE8",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.04,
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
   },
   left: { flexDirection: "row", alignItems: "center", flex: 1, marginRight: 8 },
   timeChip: {
-    backgroundColor: "#F3F4F6",
+    backgroundColor: COLORS.paper,
     borderRadius: 8,
     paddingVertical: 6,
     paddingHorizontal: 10,
@@ -131,13 +132,13 @@ const styles = StyleSheet.create({
     marginRight: 12,
     minWidth: 56,
   },
-  timeText: { fontSize: 13, fontWeight: "700", color: "#111827" },
-  dateText: { fontSize: 10, color: "#6B7280", marginTop: 2, textTransform: "uppercase" },
+  timeText: { fontSize: 13, fontWeight: "700", color: COLORS.ink },
+  dateText: { fontSize: 10, color: COLORS.inkSoft, marginTop: 2, textTransform: "uppercase" },
   textBlock: { flex: 1 },
-  name: { fontSize: 15, fontWeight: "600", color: "#111827" },
-  service: { fontSize: 13, color: "#6B7280", marginTop: 2 },
+  name: { fontSize: 15, fontWeight: "600", color: COLORS.ink },
+  service: { fontSize: 13, color: COLORS.inkSoft, marginTop: 2 },
   right: { flexDirection: "row", alignItems: "center" },
   badge: { borderRadius: 999, paddingVertical: 3, paddingHorizontal: 8, marginRight: 6 },
   badgeText: { fontSize: 11, fontWeight: "600", textTransform: "capitalize" },
-  chevron: { fontSize: 18, color: "#9CA3AF" },
+  chevron: { fontSize: 18, color: COLORS.inkSoft },
 });

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { View, Text, ActivityIndicator, ScrollView, StyleSheet, Alert } from "react-native";
+import { View, Text, ActivityIndicator, ScrollView, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { useBusiness } from "../context/BusinessContext";
@@ -9,6 +9,13 @@ import StatCard from "../components/StatCard";
 import AppointmentCard from "../components/AppointmentCard";
 import CallsListModal from "../components/CallsListModal";
 import TrendsSection from "../components/TrendsSection";
+import { COLORS } from "../theme";
+
+function greetingForHour(hour: number) {
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
+}
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -32,21 +39,26 @@ export default function HomeScreen() {
   });
 
   if (businessLoading) {
-    return <ActivityIndicator style={{ marginTop: 40 }} />;
+    return (
+      <View style={styles.screen}>
+        <ActivityIndicator style={{ marginTop: 40 }} color={COLORS.navy} />
+      </View>
+    );
   }
 
   if (!activeBusiness) {
     return (
-      <View style={styles.center}>
-        <Text style={styles.title}>No business yet</Text>
-        <Text style={styles.subtitle}>
+      <View style={[styles.screen, styles.center]}>
+        <Text style={styles.emptyBusinessTitle}>No business yet</Text>
+        <Text style={styles.emptyBusinessSubtitle}>
           Create one via Settings first, then pull to refresh here.
         </Text>
       </View>
     );
   }
 
-  const today = new Date().toDateString();
+  const now = new Date();
+  const today = now.toDateString();
 
   const todaysAppointments = (appointments ?? []).filter(
     (a) => new Date(a.start_time).toDateString() === today
@@ -57,6 +69,9 @@ export default function HomeScreen() {
   );
   const answeredCalls = todaysCalls.filter((c) => c.status === "completed");
   const missedCalls = todaysCalls.filter((c) => c.status === "missed");
+  const revenueToday = todaysAppointments
+    .filter((a) => a.status === "confirmed" || a.status === "completed")
+    .reduce((sum, a) => sum + (a.price ?? 0), 0);
 
   const isLoading = apptsLoading || callsLoading;
 
@@ -68,11 +83,21 @@ export default function HomeScreen() {
   }
 
   return (
-    <ScrollView ref={scrollRef} contentContainerStyle={{ padding: 20 }}>
+    <ScrollView
+      ref={scrollRef}
+      style={styles.screen}
+      contentContainerStyle={styles.container}
+    >
+      <Text style={styles.greeting}>
+        {greetingForHour(now.getHours())} · {now.toLocaleDateString([], { weekday: "long", month: "short", day: "numeric" })}
+      </Text>
       <Text style={styles.title}>{activeBusiness.name}</Text>
 
-      {isLoading && <ActivityIndicator style={{ marginTop: 10, marginBottom: 10 }} />}
+      {isLoading && (
+        <ActivityIndicator style={{ marginTop: 10, marginBottom: 10 }} color={COLORS.navy} />
+      )}
 
+      <Text style={styles.sectionLabel}>Today</Text>
       <View style={styles.statsRow}>
         <StatCard
           label="Appointments today"
@@ -102,22 +127,16 @@ export default function HomeScreen() {
         />
         <StatCard
           label="Revenue"
-          value="—"
-          note="Coming in Phase 4 (billing)"
+          value={`$${revenueToday.toFixed(2)}`}
+          note="Confirmed + completed"
           icon="💰"
           tone="amber"
           delay={120}
-          onPress={() =>
-            Alert.alert(
-              "Revenue",
-              "Revenue tracking is coming in Phase 4 (billing) — it'll be wired up to Stripe subscriptions and per-appointment revenue."
-            )
-          }
         />
       </View>
 
       <Text
-        style={styles.sectionTitle}
+        style={[styles.sectionLabel, styles.sectionSpacing]}
         onLayout={(e) => {
           scheduleY.current = e.nativeEvent.layout.y;
         }}
@@ -135,7 +154,10 @@ export default function HomeScreen() {
       ))}
 
       {!isLoading && todaysAppointments.length === 0 && (
-        <Text style={{ marginTop: 8, color: "#666" }}>No appointments today.</Text>
+        <View style={styles.emptyCard}>
+          <Text style={styles.emptyCardIcon}>🗓️</Text>
+          <Text style={styles.emptyCardText}>No appointments today.</Text>
+        </View>
       )}
 
       <TrendsSection businessId={activeBusiness.id} />
@@ -153,9 +175,38 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  center: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20 },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 16, color: "#111827" },
-  sectionTitle: { fontSize: 16, fontWeight: "700", marginTop: 20, marginBottom: 10, color: "#111827" },
-  subtitle: { color: "#666", marginBottom: 16, textAlign: "center" },
+  screen: { flex: 1, backgroundColor: COLORS.paper },
+  container: { padding: 20, paddingBottom: 60 },
+  center: { justifyContent: "center", alignItems: "center" },
+  greeting: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: COLORS.inkSoft,
+    marginBottom: 4,
+  },
+  title: { fontSize: 26, fontWeight: "800", marginBottom: 20, color: COLORS.ink, letterSpacing: -0.5 },
+  sectionLabel: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: COLORS.inkSoft,
+    textTransform: "uppercase",
+    letterSpacing: 0.6,
+    marginBottom: 10,
+  },
+  sectionSpacing: { marginTop: 24 },
+  emptyBusinessTitle: { fontSize: 18, fontWeight: "700", color: COLORS.ink, marginBottom: 8 },
+  emptyBusinessSubtitle: { color: COLORS.inkSoft, textAlign: "center" },
   statsRow: { flexDirection: "row", marginBottom: 12 },
+  emptyCard: {
+    marginTop: 4,
+    backgroundColor: COLORS.panel,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "#ECECE8",
+    borderStyle: "dashed",
+    paddingVertical: 28,
+    alignItems: "center",
+  },
+  emptyCardIcon: { fontSize: 26, marginBottom: 8 },
+  emptyCardText: { color: COLORS.inkSoft, fontSize: 14, fontWeight: "600" },
 });

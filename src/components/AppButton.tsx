@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { COLORS } from "../theme";
 
-type Variant = "primary" | "outline" | "danger" | "outline-danger";
+type Variant = "primary" | "amber" | "outline" | "danger" | "outline-danger";
 
 interface Props {
   title: string;
@@ -71,6 +71,11 @@ const VARIANTS: Record<
     base: { backgroundColor: COLORS.navy },
     pressed: { backgroundColor: COLORS.navyDeep },
     text: { color: "#fff" },
+  },
+  amber: {
+    base: { backgroundColor: COLORS.amber },
+    pressed: { backgroundColor: COLORS.amberDeep },
+    text: { color: COLORS.navyDeep },
   },
   outline: {
     base: { borderWidth: 1, borderColor: COLORS.navy, backgroundColor: "transparent" },

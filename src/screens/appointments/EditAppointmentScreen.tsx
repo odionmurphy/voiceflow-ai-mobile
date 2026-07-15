@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Pressable, FlatList, Alert } from "react-native";
+import { View, Text, StyleSheet, Pressable, FlatList, Alert, ScrollView } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -65,7 +65,7 @@ export default function EditAppointmentScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Reschedule</Text>
       <Text style={styles.subtitle}>
         {appointment.customer_name ?? "Unknown"} · {appointment.service_name ?? "Service TBD"}
@@ -113,12 +113,12 @@ export default function EditAppointmentScreen() {
       <View style={{ marginTop: 20 }}>
         <AppButton title="Save new time" onPress={onSave} loading={saving} />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
+  container: { padding: 16, paddingBottom: 60 },
   title: { fontSize: 22, fontWeight: "700", marginBottom: 4, color: "#111827" },
   subtitle: { color: "#444", marginBottom: 4 },
   currentTime: { color: "#666", marginBottom: 10 },

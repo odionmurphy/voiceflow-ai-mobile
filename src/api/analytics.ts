@@ -17,6 +17,7 @@ export interface Analytics {
     appointments_completed: number;
     appointments_cancelled: number;
     appointments_no_show: number;
+    revenue: number;
     answerRate: number | null;
     noShowRate: number | null;
   };

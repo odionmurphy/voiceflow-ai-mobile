@@ -6,6 +6,7 @@ export interface Appointment {
   customer_name?: string;
   customer_phone?: string;
   service_name: string | null;
+  price: number | null;
   start_time: string;
   end_time: string;
   status: string;
