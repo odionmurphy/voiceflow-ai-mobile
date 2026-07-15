@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Modal, FlatList, StyleSheet, Pressable } from "react-native";
 import { CallRecord } from "../api/calls";
+import { COLORS } from "../theme";
 
 const STATUS_COLORS: Record<string, { bg: string; fg: string }> = {
   completed: { bg: "#D1FAE5", fg: "#047857" },
@@ -14,6 +15,22 @@ function formatDuration(seconds: number) {
   return `${m}:${String(s).padStart(2, "0")}`;
 }
 
+// Transcript is stored as "role: text" lines (see voice-service's logCall) - split each
+// line into its speaker so the full transcript can render as a conversation instead of
+// a single wall of text.
+function parseTranscript(transcript: string) {
+  return transcript.split("\n").map((line, i) => {
+    const idx = line.indexOf(": ");
+    if (idx === -1) return { role: "assistant" as const, text: line, key: i };
+    const role = line.slice(0, idx).trim();
+    return {
+      role: role === "caller" ? ("caller" as const) : ("assistant" as const),
+      text: line.slice(idx + 2),
+      key: i,
+    };
+  });
+}
+
 interface Props {
   visible: boolean;
   title: string;
@@ -22,6 +39,7 @@ interface Props {
 }
 
 export default function CallsListModal({ visible, title, calls, onClose }: Props) {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const sorted = [...calls].sort((a, b) => b.created_at.localeCompare(a.created_at));
 
   return (
@@ -41,8 +59,10 @@ export default function CallsListModal({ visible, title, calls, onClose }: Props
             <FlatList
               data={sorted}
               keyExtractor={(item) => item.id}
+              extraData={expandedId}
               renderItem={({ item }) => {
                 const color = STATUS_COLORS[item.status] ?? { bg: "#F3F4F6", fg: "#374151" };
+                const expanded = expandedId === item.id;
                 return (
                   <View style={styles.row}>
                     <View style={styles.rowTop}>
@@ -66,9 +86,38 @@ export default function CallsListModal({ visible, title, calls, onClose }: Props
                       <Text style={styles.summary}>{item.summary}</Text>
                     ) : null}
                     {item.transcript ? (
-                      <Text style={styles.transcript} numberOfLines={2}>
-                        {item.transcript}
-                      </Text>
+                      expanded ? (
+                        <View style={{ marginTop: 8 }}>
+                          {parseTranscript(item.transcript).map((turn) => (
+                            <View
+                              key={turn.key}
+                              style={[
+                                styles.turn,
+                                turn.role === "caller" && styles.turnCaller,
+                              ]}
+                            >
+                              <Text style={styles.turnText}>
+                                <Text style={styles.turnRole}>
+                                  {turn.role === "caller" ? "Caller" : "AI"}:{" "}
+                                </Text>
+                                {turn.text}
+                              </Text>
+                            </View>
+                          ))}
+                          <Pressable onPress={() => setExpandedId(null)}>
+                            <Text style={styles.transcriptToggle}>Hide transcript</Text>
+                          </Pressable>
+                        </View>
+                      ) : (
+                        <View style={styles.transcriptRow}>
+                          <Text style={styles.transcript} numberOfLines={2}>
+                            {item.transcript}
+                          </Text>
+                          <Pressable onPress={() => setExpandedId(item.id)}>
+                            <Text style={styles.transcriptToggle}>View full</Text>
+                          </Pressable>
+                        </View>
+                      )
                     ) : null}
                   </View>
                 );
@@ -111,5 +160,17 @@ const styles = StyleSheet.create({
   badgeText: { fontSize: 11, fontWeight: "600", textTransform: "capitalize" },
   meta: { fontSize: 12, color: "#666", marginTop: 6 },
   summary: { fontSize: 13, fontWeight: "600", color: "#111827", marginTop: 6 },
-  transcript: { fontSize: 12, color: "#666", marginTop: 4 },
+  transcript: { fontSize: 12, color: "#666", flex: 1, marginRight: 8 },
+  transcriptRow: { flexDirection: "row", alignItems: "flex-start", marginTop: 4 },
+  transcriptToggle: { fontSize: 12, fontWeight: "600", color: COLORS.navy },
+  turn: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    marginBottom: 4,
+  },
+  turnCaller: { backgroundColor: "#E6F4F1" },
+  turnRole: { fontWeight: "700" },
+  turnText: { fontSize: 12, color: "#111827" },
 });
