@@ -8,6 +8,7 @@ import { listCalls, CallRecord } from "../api/calls";
 import StatCard from "../components/StatCard";
 import AppointmentCard from "../components/AppointmentCard";
 import CallsListModal from "../components/CallsListModal";
+import RevenueListModal from "../components/RevenueListModal";
 import TrendsSection from "../components/TrendsSection";
 import { COLORS } from "../theme";
 
@@ -25,6 +26,7 @@ export default function HomeScreen() {
   const [callsModal, setCallsModal] = useState<{ title: string; calls: CallRecord[] } | null>(
     null
   );
+  const [revenueModalOpen, setRevenueModalOpen] = useState(false);
 
   const { data: appointments, isLoading: apptsLoading } = useQuery({
     queryKey: ["appointments", activeBusiness?.id],
@@ -69,9 +71,10 @@ export default function HomeScreen() {
   );
   const answeredCalls = todaysCalls.filter((c) => c.status === "completed");
   const missedCalls = todaysCalls.filter((c) => c.status === "missed");
-  const revenueToday = todaysAppointments
-    .filter((a) => a.status === "confirmed" || a.status === "completed")
-    .reduce((sum, a) => sum + (a.price ?? 0), 0);
+  const revenueAppointments = todaysAppointments.filter(
+    (a) => (a.status === "confirmed" || a.status === "completed") && a.price != null
+  );
+  const revenueToday = revenueAppointments.reduce((sum, a) => sum + (a.price ?? 0), 0);
 
   const isLoading = apptsLoading || callsLoading;
 
@@ -132,6 +135,7 @@ export default function HomeScreen() {
           icon="💰"
           tone="amber"
           delay={120}
+          onPress={() => setRevenueModalOpen(true)}
         />
       </View>
 
@@ -170,6 +174,13 @@ export default function HomeScreen() {
           onClose={() => setCallsModal(null)}
         />
       )}
+
+      <RevenueListModal
+        visible={revenueModalOpen}
+        title="Revenue today"
+        appointments={revenueAppointments}
+        onClose={() => setRevenueModalOpen(false)}
+      />
     </ScrollView>
   );
 }
