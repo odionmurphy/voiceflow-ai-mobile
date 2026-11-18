@@ -7,6 +7,7 @@ import { useBusiness } from "../context/BusinessContext";
 import { listAppointments, Appointment } from "../api/appointments";
 import AppointmentCard from "../components/AppointmentCard";
 import HeaderButton from "../components/HeaderButton";
+import { COLORS } from "../theme";
 
 export default function AppointmentsScreen() {
   const navigation = useNavigation();
@@ -38,15 +39,18 @@ export default function AppointmentsScreen() {
   }
 
   if (isLoading) {
-    return <ActivityIndicator style={{ marginTop: 40 }} />;
+    return <ActivityIndicator style={{ marginTop: 40 }} color={COLORS.navy} />;
   }
 
   return (
     <FlatList
-      contentContainerStyle={{ padding: 20 }}
+      style={{ backgroundColor: COLORS.paper }}
+      contentContainerStyle={{ padding: 20, paddingBottom: 32 }}
       data={data ?? []}
       keyExtractor={(item) => item.id}
-      ListEmptyComponent={<Text>No appointments yet.</Text>}
+      ListEmptyComponent={
+        <Text style={{ color: COLORS.inkSoft }}>No appointments yet.</Text>
+      }
       renderItem={({ item, index }: { item: Appointment; index: number }) => (
         <AppointmentCard
           appointment={item}

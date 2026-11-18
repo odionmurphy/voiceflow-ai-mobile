@@ -6,6 +6,7 @@ import { useBusiness } from "../context/BusinessContext";
 import { listCustomers } from "../api/customers";
 import HeaderButton from "../components/HeaderButton";
 import CustomerCard from "../components/CustomerCard";
+import { COLORS } from "../theme";
 
 export default function CustomersScreen() {
   const navigation = useNavigation();
@@ -36,14 +37,19 @@ export default function CustomersScreen() {
     );
   }
 
-  if (isLoading) return <ActivityIndicator style={{ marginTop: 40 }} />;
+  if (isLoading) return <ActivityIndicator style={{ marginTop: 40 }} color={COLORS.navy} />;
 
   return (
     <FlatList
-      contentContainerStyle={{ padding: 20 }}
+      style={{ backgroundColor: COLORS.paper }}
+      contentContainerStyle={{ padding: 20, paddingBottom: 32 }}
       data={data ?? []}
       keyExtractor={(item) => item.id}
-      ListEmptyComponent={<Text>No customers yet. Tap "Add customer" to create one.</Text>}
+      ListEmptyComponent={
+        <Text style={{ color: COLORS.inkSoft }}>
+          No customers yet. Tap "Add customer" to create one.
+        </Text>
+      }
       renderItem={({ item, index }) => (
         <CustomerCard
           customer={item}

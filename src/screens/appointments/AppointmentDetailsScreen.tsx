@@ -5,11 +5,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { cancelAppointment, deleteAppointmentPermanently, Appointment } from "../../api/appointments";
 import { useBusiness } from "../../context/BusinessContext";
 import AppButton from "../../components/AppButton";
+import { COLORS } from "../../theme";
 
 const SOURCE_STYLES: Record<string, { bg: string; fg: string; icon: string; label: string }> = {
-  ai_call: { bg: "#EDE9FE", fg: "#6D28D9", icon: "🤖", label: "AI call" },
-  manual: { bg: "#F1F5F9", fg: "#475569", icon: "✍️", label: "Manual" },
-  web: { bg: "#DBEAFE", fg: "#1D4ED8", icon: "🌐", label: "Web" },
+  ai_call: { bg: COLORS.amberSoft, fg: COLORS.navyDeep, icon: "🤖", label: "AI call" },
+  manual: { bg: COLORS.cream, fg: COLORS.inkSoft, icon: "✍️", label: "Manual" },
+  web: { bg: COLORS.amberSoft, fg: COLORS.navyDeep, icon: "🌐", label: "Web" },
 };
 
 export default function AppointmentDetailsScreen() {
@@ -144,10 +145,10 @@ export default function AppointmentDetailsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20 },
-  label: { color: "#666", fontSize: 13, textTransform: "uppercase" },
-  value: { fontSize: 18, fontWeight: "600", marginTop: 4 },
-  subvalue: { fontSize: 14, color: "#666", marginTop: 2 },
+  container: { padding: 20, backgroundColor: COLORS.paper },
+  label: { color: COLORS.inkSoft, fontSize: 13, textTransform: "uppercase" },
+  value: { fontSize: 18, fontWeight: "600", marginTop: 4, color: COLORS.ink },
+  subvalue: { fontSize: 14, color: COLORS.inkSoft, marginTop: 2 },
   statusBadge: { textTransform: "capitalize" },
   badgeRow: { flexDirection: "row", marginTop: 20, gap: 32 },
   sourceBadge: {

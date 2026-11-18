@@ -22,12 +22,20 @@ export default function MainTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         ...headerScreenOptions,
-        tabBarActiveTintColor: COLORS.amber,
-        tabBarInactiveTintColor: "rgba(255,255,255,0.6)",
-        tabBarStyle: { backgroundColor: COLORS.navy, borderTopColor: COLORS.navySoft },
+        tabBarActiveTintColor: COLORS.navy,
+        tabBarInactiveTintColor: COLORS.inkSoft,
+        tabBarStyle: {
+          backgroundColor: COLORS.panel,
+          borderTopColor: COLORS.border,
+          height: 64,
+          paddingTop: 6,
+          paddingBottom: 0,
+        },
         tabBarLabelStyle: { fontWeight: "600", fontSize: 11 },
         tabBarIcon: ({ color, size }) => (
-          <Text style={{ fontSize: size, color }}>{TAB_ICONS[route.name] ?? "•"}</Text>
+          <Text style={{ fontSize: size, color, fontWeight: "600" }}>
+            {TAB_ICONS[route.name] ?? "•"}
+          </Text>
         ),
       })}
     >

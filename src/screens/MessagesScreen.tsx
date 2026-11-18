@@ -12,9 +12,9 @@ const CHANNEL_ICON: Record<Message["channel"], string> = {
 };
 
 const STATUS_STYLE: Record<Message["status"], { bg: string; fg: string }> = {
-  sent: { bg: "#E4F4F1", fg: COLORS.teal },
-  delivered: { bg: "#E4F4F1", fg: COLORS.teal },
-  failed: { bg: "#FEE2E2", fg: "#DC2626" },
+  sent: { bg: COLORS.tealSoft, fg: COLORS.teal },
+  delivered: { bg: COLORS.tealSoft, fg: COLORS.teal },
+  failed: { bg: COLORS.redSoft, fg: COLORS.red },
 };
 
 const TEMPLATE_LABEL: Record<string, string> = {
@@ -54,6 +54,7 @@ export default function MessagesScreen() {
   return (
     <FlatList
       contentContainerStyle={styles.container}
+      style={styles.screen}
       data={messages}
       keyExtractor={(item) => item.id}
       ListHeaderComponent={
@@ -93,22 +94,23 @@ export default function MessagesScreen() {
 }
 
 const styles = StyleSheet.create({
-  center: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20 },
-  container: { padding: 20 },
-  hint: { fontSize: 13, color: "#666", marginBottom: 14, lineHeight: 18 },
-  empty: { color: "#666", fontSize: 14, marginTop: 8 },
+  screen: { backgroundColor: COLORS.paper },
+  center: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20, backgroundColor: COLORS.paper },
+  container: { padding: 20, paddingBottom: 32 },
+  hint: { fontSize: 13, color: COLORS.inkSoft, marginBottom: 14, lineHeight: 18 },
+  empty: { color: COLORS.inkSoft, fontSize: 14, marginTop: 8 },
   card: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
+    backgroundColor: COLORS.panel,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: COLORS.border,
     padding: 14,
     marginBottom: 10,
   },
   cardTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  customer: { fontSize: 15, fontWeight: "600", color: "#111827", flex: 1, marginRight: 8 },
+  customer: { fontSize: 15, fontWeight: "600", color: COLORS.ink, flex: 1, marginRight: 8 },
   badge: { borderRadius: 999, paddingVertical: 3, paddingHorizontal: 10 },
   badgeText: { fontSize: 11, fontWeight: "700", textTransform: "capitalize" },
-  meta: { fontSize: 13, color: "#6B7280", marginTop: 6 },
-  time: { fontSize: 12, color: "#9CA3AF", marginTop: 4 },
+  meta: { fontSize: 13, color: COLORS.inkSoft, marginTop: 6 },
+  time: { fontSize: 12, color: COLORS.inkSoft, marginTop: 4 },
 });

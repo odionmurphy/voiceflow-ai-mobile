@@ -8,6 +8,7 @@ import { createCustomerSchema, CreateCustomerForm } from "../../validation/custo
 import { createCustomer } from "../../api/customers";
 import { useBusiness } from "../../context/BusinessContext";
 import AppButton from "../../components/AppButton";
+import { COLORS } from "../../theme";
 
 export default function CreateCustomerScreen() {
   const navigation = useNavigation();
@@ -52,7 +53,7 @@ export default function CreateCustomerScreen() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.container}>
       <Text style={styles.title}>Add customer</Text>
 
       <Field label="Full name *" error={errors.fullName?.message}>
@@ -129,15 +130,18 @@ function Field({
 }
 
 const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: COLORS.paper },
   container: { padding: 20, paddingBottom: 60 },
-  title: { fontSize: 22, fontWeight: "bold", marginBottom: 20 },
-  label: { fontSize: 13, color: "#444", marginBottom: 4, fontWeight: "600" },
+  title: { fontSize: 22, fontWeight: "bold", marginBottom: 20, color: COLORS.ink },
+  label: { fontSize: 13, color: COLORS.inkSoft, marginBottom: 4, fontWeight: "600" },
   input: {
     borderWidth: 1,
-    borderColor: "#D1D5DB",
-    borderRadius: 8,
+    borderColor: COLORS.border,
+    borderRadius: 6,
     padding: 10,
     fontSize: 15,
+    color: COLORS.ink,
+    backgroundColor: COLORS.panel,
   },
-  error: { color: "#DC2626", fontSize: 12, marginTop: 4 },
+  error: { color: COLORS.red, fontSize: 12, marginTop: 4 },
 });

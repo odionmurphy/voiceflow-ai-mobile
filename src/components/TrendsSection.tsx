@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.panel,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#ECECE8",
+    borderColor: COLORS.border,
     padding: 2,
   },
   rangeBtn: { paddingVertical: 5, paddingHorizontal: 9, borderRadius: 6 },
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.panel,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: "#ECECE8",
+    borderColor: COLORS.border,
     padding: 14,
   },
 });

@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { updateCustomer, deleteCustomer, Customer } from "../../api/customers";
 import { useBusiness } from "../../context/BusinessContext";
 import AppButton from "../../components/AppButton";
+import { COLORS } from "../../theme";
 
 export default function CustomerDetailScreen() {
   const navigation = useNavigation();
@@ -63,7 +64,7 @@ export default function CustomerDetailScreen() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.container}>
       <Text style={styles.label}>Full name</Text>
       <TextInput style={styles.input} value={fullName} onChangeText={setFullName} />
 
@@ -111,14 +112,17 @@ export default function CustomerDetailScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: COLORS.paper },
   container: { padding: 20, paddingBottom: 60 },
-  label: { fontSize: 13, color: "#444", marginBottom: 4, marginTop: 14, fontWeight: "600" },
-  value: { fontSize: 15, color: "#111" },
+  label: { fontSize: 13, color: COLORS.inkSoft, marginBottom: 4, marginTop: 14, fontWeight: "600" },
+  value: { fontSize: 15, color: COLORS.ink },
   input: {
     borderWidth: 1,
-    borderColor: "#D1D5DB",
-    borderRadius: 8,
+    borderColor: COLORS.border,
+    borderRadius: 6,
     padding: 10,
     fontSize: 15,
+    color: COLORS.ink,
+    backgroundColor: COLORS.panel,
   },
 });

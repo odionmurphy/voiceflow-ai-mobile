@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: "#ECECE8",
+    borderTopColor: COLORS.border,
   },
   totalLabel: { fontSize: 14, fontWeight: "600", color: COLORS.inkSoft },
   totalValue: { fontSize: 20, fontWeight: "800", color: COLORS.ink },

@@ -4,17 +4,17 @@ import { Appointment } from "../api/appointments";
 import { COLORS } from "../theme";
 
 const STATUS_COLORS: Record<string, { bg: string; fg: string }> = {
-  confirmed: { bg: "#D1FAE5", fg: "#047857" },
-  completed: { bg: "#D1FAE5", fg: "#047857" },
-  cancelled: { bg: "#FEE2E2", fg: "#DC2626" },
-  no_show: { bg: "#FEE2E2", fg: "#DC2626" },
-  pending: { bg: "#FEF3C7", fg: "#92400E" },
+  confirmed: { bg: COLORS.tealSoft, fg: COLORS.teal },
+  completed: { bg: COLORS.tealSoft, fg: COLORS.teal },
+  cancelled: { bg: COLORS.redSoft, fg: COLORS.red },
+  no_show: { bg: COLORS.redSoft, fg: COLORS.red },
+  pending: { bg: COLORS.amberSoft, fg: COLORS.amberDeep },
 };
 
 const SOURCE_STYLES: Record<string, { bg: string; fg: string; icon: string; label: string }> = {
-  ai_call: { bg: "#EDE9FE", fg: "#6D28D9", icon: "🤖", label: "AI call" },
-  manual: { bg: "#F1F5F9", fg: "#475569", icon: "✍️", label: "Manual" },
-  web: { bg: "#DBEAFE", fg: "#1D4ED8", icon: "🌐", label: "Web" },
+  ai_call: { bg: COLORS.amberSoft, fg: COLORS.navyDeep, icon: "🤖", label: "AI call" },
+  manual: { bg: COLORS.cream, fg: COLORS.inkSoft, icon: "✍️", label: "Manual" },
+  web: { bg: COLORS.amberSoft, fg: COLORS.navyDeep, icon: "🌐", label: "Web" },
 };
 
 interface Props {
@@ -106,11 +106,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: COLORS.panel,
-    borderRadius: 12,
+    borderRadius: 10,
     padding: 14,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: "#ECECE8",
+    borderColor: COLORS.border,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.04,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },
   cardCompact: { padding: 10 },
   cardPressed: {
-    backgroundColor: "#F9FAFB",
+    backgroundColor: COLORS.paper,
     transform: [{ scale: 0.98 }],
   },
   left: { flexDirection: "row", alignItems: "center", flex: 1, marginRight: 8 },

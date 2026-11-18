@@ -211,9 +211,9 @@ const styles = StyleSheet.create({
   emptyCard: {
     marginTop: 4,
     backgroundColor: COLORS.panel,
-    borderRadius: 14,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ECECE8",
+    borderColor: COLORS.border,
     borderStyle: "dashed",
     paddingVertical: 28,
     alignItems: "center",

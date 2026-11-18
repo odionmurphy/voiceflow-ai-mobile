@@ -19,6 +19,44 @@ import { COLORS } from "../../theme";
 type ServiceRow = { name: string; durationMinutes: string; price: string };
 type FaqRow = { question: string; answer: string };
 
+const PERSONALITIES = [
+  {
+    id: "default",
+    name: "Standard",
+    label: "FRIENDLY & PROFESSIONAL",
+    description: "A balanced, approachable style for everyday calls.",
+    gender: "DEFAULT",
+  },
+  {
+    id: "maya",
+    name: "Maya",
+    label: "WARM & NATURAL",
+    description: "Friendly and reassuring, without sounding scripted.",
+    gender: "FEMALE",
+  },
+  {
+    id: "mike",
+    name: "Mike",
+    label: "DIRECT & GROUNDED",
+    description: "Clear, confident, and straight to the point.",
+    gender: "MALE",
+  },
+  {
+    id: "lena",
+    name: "Lena",
+    label: "CALM & REASSURING",
+    description: "Patient and composed, especially when callers are unsure.",
+    gender: "FEMALE",
+  },
+  {
+    id: "alex",
+    name: "Alex",
+    label: "BRIGHT & UPBEAT",
+    description: "Positive and energetic while staying professional.",
+    gender: "MALE",
+  },
+] as const;
+
 function SectionCard({
   icon,
   title,
@@ -59,6 +97,7 @@ export default function AISettingsScreen() {
   const [saved, setSaved] = useState(false);
 
   const [greeting, setGreeting] = useState("");
+  const [voiceId, setVoiceId] = useState("default");
   const [services, setServices] = useState<ServiceRow[]>([]);
   const [faq, setFaq] = useState<FaqRow[]>([]);
   const [minNoticeHours, setMinNoticeHours] = useState("");
@@ -80,6 +119,7 @@ export default function AISettingsScreen() {
   useEffect(() => {
     if (data && !loaded) {
       setGreeting(data.greeting ?? "");
+      setVoiceId(data.voice_id ?? "default");
       setServices(
         (data.services ?? []).map((s: AIService) => ({
           name: s.name,
@@ -153,6 +193,7 @@ export default function AISettingsScreen() {
     try {
       await updateAISettings(activeBusiness.id, {
         greeting,
+        voiceId,
         services: services.map((s) => ({
           name: s.name,
           durationMinutes: Number(s.durationMinutes),
@@ -193,12 +234,66 @@ export default function AISettingsScreen() {
   const inputStyle = (extra?: object) => [styles.input, !isOwner && styles.inputDisabled, extra];
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.container}>
       {!isOwner && (
         <Text style={styles.notice}>
           Only the business owner can edit AI settings. You&apos;re viewing this as staff.
         </Text>
       )}
+
+      <SectionCard
+        icon="🎙️"
+        title="Choose your AI receptionist's personality"
+        description="Pick the conversational style that feels right for your practice."
+      >
+        <View
+          accessibilityRole="radiogroup"
+          accessibilityLabel="Receptionist personality"
+          style={styles.personalityGrid}
+        >
+          {PERSONALITIES.map((personality) => {
+            const selected = voiceId === personality.id;
+            return (
+              <Pressable
+                key={personality.id}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: selected, disabled: !isOwner }}
+                accessibilityLabel={`${personality.name}, ${personality.gender}, ${personality.label}. ${personality.description}`}
+                disabled={!isOwner}
+                onPress={() => setVoiceId(personality.id)}
+                style={({ pressed }) => [
+                  styles.personalityCard,
+                  selected && styles.personalityCardSelected,
+                  pressed && isOwner && styles.personalityCardPressed,
+                  !isOwner && styles.personalityCardDisabled,
+                ]}
+              >
+                {selected ? (
+                  <View style={styles.personalityCheck}>
+                    <Text style={styles.personalityCheckText}>✓</Text>
+                  </View>
+                ) : null}
+                <View style={styles.personalityVoiceIcon}>
+                  <Text style={styles.personalityVoiceIconText}>〰</Text>
+                </View>
+                <View style={styles.personalityNameRow}>
+                  <Text style={styles.personalityName}>{personality.name}</Text>
+                  <Text style={styles.personalityGender}>{personality.gender}</Text>
+                </View>
+                <Text style={styles.personalityLabel}>{personality.label}</Text>
+                <Text style={styles.personalityDescription}>
+                  {personality.description}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
+        <Text style={styles.hint}>
+          After saving, Twilio uses the selected male or female voice for future
+          calls in your chosen language. The personality also guides how the
+          receptionist phrases its replies.
+        </Text>
+      </SectionCard>
 
       <SectionCard icon="🤖" title="Assistant" description="Name and greeting callers hear first">
         <Text style={styles.label}>Assistant name</Text>
@@ -422,11 +517,12 @@ export default function AISettingsScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: COLORS.paper },
   center: { flex: 1, justifyContent: "center", alignItems: "center", padding: 20 },
   container: { padding: 20, paddingBottom: 40 },
   notice: {
-    backgroundColor: "#FEF3C7",
-    color: "#92400E",
+    backgroundColor: COLORS.amberSoft,
+    color: COLORS.navyDeep,
     fontSize: 12,
     fontWeight: "600",
     padding: 10,
@@ -434,10 +530,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   card: {
-    backgroundColor: "#fff",
-    borderRadius: 14,
+    backgroundColor: COLORS.panel,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: COLORS.border,
     marginBottom: 14,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -460,45 +556,118 @@ const styles = StyleSheet.create({
     marginRight: 10,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: COLORS.navySoft,
+    backgroundColor: COLORS.amberSoft,
   },
   iconBadgeText: { fontSize: 16 },
-  cardTitle: { fontSize: 15, fontWeight: "700", color: "#111827" },
-  cardDescription: { fontSize: 12, color: "#6B7280", marginTop: 1 },
+  cardTitle: { fontSize: 15, fontWeight: "700", color: COLORS.ink },
+  cardDescription: { fontSize: 12, color: COLORS.inkSoft, marginTop: 1 },
   cardBody: { padding: 16, paddingTop: 12 },
+  personalityGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: 10,
+  },
+  personalityCard: {
+    width: "48%",
+    minHeight: 178,
+    padding: 12,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.panel,
+  },
+  personalityCardSelected: {
+    borderColor: COLORS.navy,
+    backgroundColor: COLORS.amberSoft,
+  },
+  personalityCardPressed: { opacity: 0.8 },
+  personalityCardDisabled: { opacity: 0.72 },
+  personalityCheck: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLORS.navy,
+  },
+  personalityCheckText: { color: "#fff", fontSize: 12, fontWeight: "800" },
+  personalityVoiceIcon: {
+    width: 42,
+    height: 42,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 12,
+    backgroundColor: COLORS.navy,
+  },
+  personalityVoiceIconText: { color: "#fff", fontSize: 20, fontWeight: "700" },
+  personalityNameRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: 6,
+    marginTop: 10,
+  },
+  personalityName: { color: "#111827", fontSize: 14, fontWeight: "700" },
+  personalityGender: {
+    overflow: "hidden",
+    paddingHorizontal: 7,
+    paddingVertical: 3,
+    borderRadius: 8,
+    backgroundColor: COLORS.amberSoft,
+    color: COLORS.navy,
+    fontSize: 8,
+    fontWeight: "800",
+  },
+  personalityLabel: {
+    marginTop: 5,
+    color: COLORS.navy,
+    fontSize: 9,
+    fontWeight: "800",
+    letterSpacing: 0.5,
+  },
+  personalityDescription: {
+    marginTop: 6,
+    color: COLORS.inkSoft,
+    fontSize: 11,
+    lineHeight: 16,
+  },
   addLink: { color: COLORS.navy, fontWeight: "700", fontSize: 13, marginTop: 6 },
-  hint: { color: "#666", fontSize: 13, marginTop: 4, marginBottom: 4 },
-  label: { fontSize: 12, color: "#444", marginBottom: 4 },
+  hint: { color: COLORS.inkSoft, fontSize: 13, marginTop: 4, marginBottom: 4 },
+  label: { fontSize: 12, color: COLORS.inkSoft, marginBottom: 4 },
   input: {
     borderWidth: 1,
-    borderColor: "#D1D5DB",
+    borderColor: COLORS.border,
     borderRadius: 8,
     padding: 10,
     fontSize: 14,
-    color: "#111827",
-    backgroundColor: "#fff",
+    color: COLORS.ink,
+    backgroundColor: COLORS.panel,
   },
-  inputDisabled: { backgroundColor: "#F3F4F6", color: "#888" },
+  inputDisabled: { backgroundColor: COLORS.cream, color: COLORS.inkSoft },
   row: { flexDirection: "row", alignItems: "center" },
   rowCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F9FAFB",
+    backgroundColor: COLORS.cream,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#F0F1F3",
+    borderColor: COLORS.border,
     padding: 8,
     marginBottom: 8,
   },
-  rowInputName: { flex: 2, marginRight: 6, backgroundColor: "#fff" },
-  rowInputSmall: { flex: 1, marginRight: 6, backgroundColor: "#fff" },
+  rowInputName: { flex: 2, marginRight: 6, backgroundColor: COLORS.panel },
+  rowInputSmall: { flex: 1, marginRight: 6, backgroundColor: COLORS.panel },
   removeBtn: { padding: 8 },
-  removeText: { color: "#DC2626", fontWeight: "600" },
+  removeText: { color: COLORS.red, fontWeight: "600" },
   faqBlock: {
-    backgroundColor: "#F9FAFB",
+    backgroundColor: COLORS.cream,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#F0F1F3",
+    borderColor: COLORS.border,
     padding: 10,
     marginBottom: 10,
   },
@@ -511,8 +680,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  qaBadgeQ: { backgroundColor: "#D6EFEB" },
-  qaBadgeA: { backgroundColor: "#F2DDB3" },
+  qaBadgeQ: { backgroundColor: COLORS.tealSoft },
+  qaBadgeA: { backgroundColor: COLORS.amberSoft },
   qaBadgeTextQ: { fontSize: 10, fontWeight: "800", color: COLORS.teal },
   qaBadgeTextA: { fontSize: 10, fontWeight: "800", color: COLORS.amberDeep },
   previewBubble: {

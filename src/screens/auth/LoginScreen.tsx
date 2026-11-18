@@ -7,8 +7,8 @@ import { COLORS } from "../../theme";
 
 export default function LoginScreen() {
   const { signIn } = useAuth();
-  const [email, setEmail] = useState("murphy@example.com");
-  const [password, setPassword] = useState("supersecret1");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleLogin() {

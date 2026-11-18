@@ -79,17 +79,17 @@ const VARIANTS: Record<
   },
   outline: {
     base: { borderWidth: 1, borderColor: COLORS.navy, backgroundColor: "transparent" },
-    pressed: { backgroundColor: "#F3F4F6" },
+    pressed: { backgroundColor: COLORS.amberSoft },
     text: { color: COLORS.navy },
   },
   danger: {
     base: { backgroundColor: COLORS.red },
-    pressed: { backgroundColor: "#A83D3D" },
+    pressed: { backgroundColor: "#87342F" },
     text: { color: "#fff" },
   },
   "outline-danger": {
-    base: { borderWidth: 1, borderColor: "#FCA5A5", backgroundColor: "#FEF7F7" },
-    pressed: { backgroundColor: "#FEE2E2" },
-    text: { color: "#DC2626" },
+    base: { borderWidth: 1, borderColor: COLORS.redSoft, backgroundColor: "#FEF9F8" },
+    pressed: { backgroundColor: COLORS.redSoft },
+    text: { color: COLORS.red },
   },
 };

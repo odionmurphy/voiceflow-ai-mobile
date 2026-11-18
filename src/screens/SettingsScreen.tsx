@@ -146,7 +146,7 @@ export default function SettingsScreen() {
                   <Text style={styles.actionText}>Edit</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.actionBtn} onPress={() => handleDelete(item)}>
-                  <Text style={[styles.actionText, { color: "#DC2626" }]}>Delete</Text>
+                  <Text style={[styles.actionText, { color: COLORS.red }]}>Delete</Text>
                 </TouchableOpacity>
               </>
             )}
@@ -276,35 +276,36 @@ export default function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1 },
+  screen: { flex: 1, backgroundColor: COLORS.paper },
   container: { padding: 20, paddingBottom: 40 },
-  label: { color: "#666", fontSize: 13, textTransform: "uppercase" },
-  value: { fontSize: 18, fontWeight: "600", marginTop: 4 },
+  label: { color: COLORS.inkSoft, fontSize: 13, textTransform: "uppercase", fontWeight: "600" },
+  value: { fontSize: 18, fontWeight: "600", marginTop: 4, color: COLORS.ink },
   businessRow: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F3F4F6",
+    backgroundColor: COLORS.panel,
+    borderWidth: 1,
+    borderColor: COLORS.border,
     padding: 12,
     borderRadius: 8,
     marginBottom: 8,
   },
   businessRowActive: {
-    backgroundColor: "#DBEAFE",
-    borderWidth: 1,
-    borderColor: "#3B82F6",
+    backgroundColor: COLORS.amberSoft,
+    borderColor: COLORS.navy,
   },
-  businessName: { fontSize: 15, fontWeight: "500" },
-  activeTag: { fontSize: 11, color: "#3B82F6", fontWeight: "700" },
+  businessName: { fontSize: 15, fontWeight: "600", color: COLORS.ink },
+  activeTag: { fontSize: 11, color: COLORS.navy, fontWeight: "700" },
   actionBtn: { paddingHorizontal: 8, paddingVertical: 4 },
-  actionText: { fontSize: 13, fontWeight: "600", color: "#3B82F6" },
+  actionText: { fontSize: 13, fontWeight: "600", color: COLORS.navy },
   calendarSection: { marginTop: 24 },
-  calendarHint: { fontSize: 13, color: "#666", marginTop: 4, lineHeight: 18 },
+  calendarHint: { fontSize: 13, color: COLORS.inkSoft, marginTop: 4, lineHeight: 18 },
   calendarCard: {
     marginTop: 12,
-    backgroundColor: "#fff",
-    borderRadius: 14,
+    backgroundColor: COLORS.panel,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: COLORS.border,
     padding: 16,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -320,13 +321,13 @@ const styles = StyleSheet.create({
     marginRight: 12,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#EFF3FE",
+    backgroundColor: COLORS.amberSoft,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: COLORS.border,
   },
   googleBadgeText: { fontSize: 18, fontWeight: "800", color: "#4285F4" },
-  calendarTitle: { fontSize: 15, fontWeight: "700", color: "#111827" },
-  calendarStatus: { fontSize: 12, color: "#6B7280", marginTop: 2 },
+  calendarTitle: { fontSize: 15, fontWeight: "700", color: COLORS.ink },
+  calendarStatus: { fontSize: 12, color: COLORS.inkSoft, marginTop: 2 },
   connectedPill: {
     flexDirection: "row",
     alignItems: "center",
@@ -334,7 +335,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingVertical: 4,
     paddingHorizontal: 10,
-    backgroundColor: "#E4F4F1",
+    backgroundColor: COLORS.tealSoft,
   },
   connectedDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: COLORS.teal },
   connectedPillText: { fontSize: 11, fontWeight: "700", color: COLORS.teal },
@@ -347,7 +348,7 @@ const styles = StyleSheet.create({
   connectButton: { backgroundColor: COLORS.navy },
   connectButtonPressed: { backgroundColor: COLORS.navyDeep },
   connectButtonText: { color: "#fff", fontWeight: "700", fontSize: 14 },
-  disconnectButton: { borderWidth: 1, borderColor: "#FCA5A5", backgroundColor: "#FEF7F7" },
-  disconnectButtonPressed: { backgroundColor: "#FEE2E2" },
-  disconnectButtonText: { color: "#DC2626", fontWeight: "700", fontSize: 14 },
+  disconnectButton: { borderWidth: 1, borderColor: COLORS.redSoft, backgroundColor: "#FEF9F8" },
+  disconnectButtonPressed: { backgroundColor: COLORS.redSoft },
+  disconnectButtonText: { color: COLORS.red, fontWeight: "700", fontSize: 14 },
 });

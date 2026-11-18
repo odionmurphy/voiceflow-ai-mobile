@@ -7,6 +7,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useBusiness } from "../../context/BusinessContext";
 import { getAvailability, updateAppointment, Appointment } from "../../api/appointments";
 import AppButton from "../../components/AppButton";
+import { COLORS } from "../../theme";
 
 export default function EditAppointmentScreen() {
   const navigation = useNavigation();
@@ -65,7 +66,7 @@ export default function EditAppointmentScreen() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.container}>
       <Text style={styles.title}>Reschedule</Text>
       <Text style={styles.subtitle}>
         {appointment.customer_name ?? "Unknown"} · {appointment.service_name ?? "Service TBD"}
@@ -82,7 +83,7 @@ export default function EditAppointmentScreen() {
           setSelectedSlot(null);
         }}
         markedDates={
-          selectedDate ? { [selectedDate]: { selected: true, selectedColor: "#3b82f6" } } : {}
+          selectedDate ? { [selectedDate]: { selected: true, selectedColor: COLORS.navy } } : {}
         }
       />
 
@@ -118,12 +119,13 @@ export default function EditAppointmentScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: COLORS.paper },
   container: { padding: 16, paddingBottom: 60 },
-  title: { fontSize: 22, fontWeight: "700", marginBottom: 4, color: "#111827" },
-  subtitle: { color: "#444", marginBottom: 4 },
-  currentTime: { color: "#666", marginBottom: 10 },
-  section: { marginTop: 20, marginBottom: 10, fontWeight: "600", color: "#111827" },
-  emptyText: { color: "#666", paddingVertical: 10 },
+  title: { fontSize: 22, fontWeight: "700", marginBottom: 4, color: COLORS.ink },
+  subtitle: { color: COLORS.inkSoft, marginBottom: 4 },
+  currentTime: { color: COLORS.inkSoft, marginBottom: 10 },
+  section: { marginTop: 20, marginBottom: 10, fontWeight: "600", color: COLORS.ink },
+  emptyText: { color: COLORS.inkSoft, paddingVertical: 10 },
   chip: {
     minWidth: 64,
     alignItems: "center",
@@ -131,17 +133,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: COLORS.border,
     borderRadius: 20,
     marginRight: 8,
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.panel,
   },
   activeChip: {
-    backgroundColor: "#dbeafe",
-    borderColor: "#3b82f6",
+    backgroundColor: COLORS.amberSoft,
+    borderColor: COLORS.navy,
   },
   chipText: {
-    color: "#111827",
+    color: COLORS.ink,
     fontSize: 14,
   },
 });

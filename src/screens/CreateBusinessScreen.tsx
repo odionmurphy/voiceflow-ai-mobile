@@ -7,6 +7,7 @@ import { createBusinessSchema, CreateBusinessForm } from "../validation/business
 import { createBusiness, updateBusiness, Business } from "../api/business";
 import { useBusiness } from "../context/BusinessContext";
 import AppButton from "../components/AppButton";
+import { COLORS } from "../theme";
 
 const DAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const;
 
@@ -216,17 +217,19 @@ function Field({
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, paddingBottom: 60 },
-  title: { fontSize: 22, fontWeight: "bold", marginBottom: 4 },
-  subtitle: { color: "#666", marginBottom: 20 },
+  container: { padding: 20, paddingBottom: 60, backgroundColor: COLORS.paper },
+  title: { fontSize: 22, fontWeight: "bold", marginBottom: 4, color: COLORS.ink },
+  subtitle: { color: COLORS.inkSoft, marginBottom: 20 },
   row: { flexDirection: "row" },
-  label: { fontSize: 13, color: "#444", marginBottom: 4, fontWeight: "600" },
+  label: { fontSize: 13, color: COLORS.inkSoft, marginBottom: 4, fontWeight: "600" },
   input: {
     borderWidth: 1,
-    borderColor: "#D1D5DB",
-    borderRadius: 8,
+    borderColor: COLORS.border,
+    borderRadius: 6,
     padding: 10,
     fontSize: 15,
+    color: COLORS.ink,
+    backgroundColor: COLORS.panel,
   },
-  error: { color: "#DC2626", fontSize: 12, marginTop: 4 },
+  error: { color: COLORS.red, fontSize: 12, marginTop: 4 },
 });

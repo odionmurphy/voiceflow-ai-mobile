@@ -87,10 +87,10 @@ export default function StatCard({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: COLORS.panel,
-    borderRadius: 14,
+    borderRadius: 10,
     marginRight: 10,
     borderWidth: 1,
-    borderColor: "#ECECE8",
+    borderColor: COLORS.border,
     overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -99,14 +99,14 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   cardHighlight: {
-    borderColor: "#FCA5A5",
-    backgroundColor: "#FEF7F7",
+    borderColor: COLORS.redSoft,
+    backgroundColor: "#FEF9F8",
   },
   pressed: {
     opacity: 0.85,
     transform: [{ scale: 0.97 }],
   },
-  topBar: { height: 4, width: "100%" },
+  topBar: { height: 3, width: "100%" },
   body: { padding: 14 },
   headerRow: {
     flexDirection: "row",
